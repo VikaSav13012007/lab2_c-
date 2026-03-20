@@ -153,6 +153,27 @@ void print_simple_vehicles(Vehicle_without_nesting_structures simple_vehicles[],
     }
 }
 
+void sort_vehicles_rand(Vehicle vehicles_rand[], int size) {
+    Vehicle temp;
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+            if (vehicles_rand[j].engine.power > vehicles_rand[j + 1].engine.power) {
+                temp = vehicles_rand[j];
+                vehicles_rand[j] = vehicles_rand[j + 1];
+                vehicles_rand[j + 1] = temp;
+            }
+        }
+    }
+}
+
+
+void input_vehicles_random(Vehicle vehicles_rand[], int size) {
+    for (int i = 0; i < size; i++) {
+        vehicles_rand[i].model = "Model" + to_string(i + 1);
+        vehicles_rand[i].engine.power = rand() % 600;
+        vehicles_rand[i].engine.volume = (rand() % 300) / 10.0;
+    }
+}
 int main() {
     Vehicle vehicles[5];
     input_vehicles(vehicles);
@@ -163,17 +184,28 @@ int main() {
     print_by_type(vehicles);
 
     const int SIZE = 100;
+    Vehicle vehicles_rand[SIZE];
+    input_vehicles_random(vehicles_rand,SIZE);
+    clock_t start1 = clock();
+    sort_vehicles_rand(vehicles_rand,SIZE);
+    clock_t end1 = clock();
+    double time1 = double(end1 - start1) / CLOCKS_PER_SEC;
+    cout << "время сортировки со структурой: " << time1 << " сек" << endl;
+
+
     Vehicle_without_nesting_structures simple_vehicles[SIZE];
     input_simple_vehicles(simple_vehicles, SIZE);
     
-    clock_t start = clock();
+    clock_t start2 = clock();
     sort_simple_vehicles(simple_vehicles, SIZE);
-    clock_t end = clock();
+    clock_t end2 = clock();
+   
     
-    double time = double(end - start) / CLOCKS_PER_SEC;
-    cout << "время сортировки: " << time << " сек" << endl;
+    double time2 = double(end2 - start2) / CLOCKS_PER_SEC;
+    cout << "время сортировки без структуры: " << time2 << " сек" << endl;
     
     print_simple_vehicles(simple_vehicles, SIZE);
     
     return 0;
 }
+
