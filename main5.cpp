@@ -38,6 +38,7 @@ string type_to_string(VehicleType type) {
     if (type == Car) return "Car";
     if (type == Truck) return "Truck";
     if (type == Motorcycle) return "Motorcycle";
+    return "";
 }
 
 void input_vehicles(Vehicle vehicles[]) {
@@ -83,18 +84,7 @@ void print_vehicles(Vehicle vehicles[]) {
     }
 }
 
-void sort_by_power(Vehicle vehicles[]) {
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4 - i; j++) {
-            if (vehicles[j].engine.power > vehicles[j + 1].engine.power) {
-                Vehicle temp = vehicles[j];
-                vehicles[j] = vehicles[j + 1];
-                vehicles[j + 1] = temp;
-            }
-        }
-    }
-    cout << "транспорт отсортирован по мощности" << endl;
-}
+
 
 void print_by_type(Vehicle vehicles[]) {
     bool flag_found = false;
@@ -153,7 +143,7 @@ void print_simple_vehicles(Vehicle_without_nesting_structures simple_vehicles[],
     }
 }
 
-void sort_vehicles_rand(Vehicle vehicles_rand[], int size) {
+void sort_vehicles_by_power(Vehicle vehicles_rand[], int size) { //одна функция для сортровки вместо двух
     Vehicle temp;
     for (int i = 0; i < size - 1; i++) {
         for (int j = 0; j < size - i - 1; j++) {
@@ -164,6 +154,8 @@ void sort_vehicles_rand(Vehicle vehicles_rand[], int size) {
             }
         }
     }
+    cout<<"транспорт отсортирован"<<endl;
+   
 }
 
 
@@ -173,39 +165,58 @@ void input_vehicles_random(Vehicle vehicles_rand[], int size) {
         vehicles_rand[i].engine.power = rand() % 600;
         vehicles_rand[i].engine.volume = (rand() % 300) / 10.0;
     }
+
+
+}
+
+void  time_of_sort_struct_Vehicle(Vehicle vehicles[], int size){//добавлена функция расчета времени сортировки массива Vehicle
+    clock_t start=clock();
+    sort_vehicles_by_power(vehicles,size);
+    clock_t stop=clock();
+    double time = (double)(stop - start) * 1000.0 / CLOCKS_PER_SEC;
+    cout<<"время сортировки массива структур Vehicle: "<<time<<"миллисекунд"<<endl;
+}
+void time_of_sort_struct_Vehicle_without_nesting(Vehicle_without_nesting_structures vehicles[], int size){//добавлена функция расчета времени сортировки массива Vehicle_without_nesting_structures
+    clock_t start=clock();
+    sort_simple_vehicles(vehicles,size);
+    clock_t stop=clock();
+    double time = (double)(stop - start) * 1000.0 / CLOCKS_PER_SEC;
+    cout<<"время сортировки массива структур Vehicle_without_nesting_structures: "<<time<<"миллисекунд"<<endl;
 }
 int main() {
+
+    int size_arr_for_struct=5;
     Vehicle vehicles[5];
+
     input_vehicles(vehicles);
-    sort_by_power(vehicles);
+    sort_vehicles_by_power(vehicles,size_arr_for_struct);
     print_vehicles(vehicles);
     
     cout << "поиск по типу:" << endl;
     print_by_type(vehicles);
 
-    const int SIZE = 100;
+    const int SIZE = 2000;
     Vehicle vehicles_rand[SIZE];
     input_vehicles_random(vehicles_rand,SIZE);
-    clock_t start1 = clock();
-    sort_vehicles_rand(vehicles_rand,SIZE);
-    clock_t end1 = clock();
-    double time1 = double(end1 - start1) / CLOCKS_PER_SEC;
-    cout << "время сортировки со структурой: " << time1 << " сек" << endl;
-
 
     Vehicle_without_nesting_structures simple_vehicles[SIZE];
     input_simple_vehicles(simple_vehicles, SIZE);
+    //print_simple_vehicles(simple_vehicles, SIZE);
+
+    //добавлена функция расчета времени сортировки массива Vehicle
+    time_of_sort_struct_Vehicle(vehicles_rand,SIZE);
     
-    clock_t start2 = clock();
-    sort_simple_vehicles(simple_vehicles, SIZE);
-    clock_t end2 = clock();
-   
-    
-    double time2 = double(end2 - start2) / CLOCKS_PER_SEC;
-    cout << "время сортировки без структуры: " << time2 << " сек" << endl;
-    
-    print_simple_vehicles(simple_vehicles, SIZE);
+    //добавлена функция расчета времени сортировки массива Vehicle_without_nesting_structures
+    time_of_sort_struct_Vehicle_without_nesting(simple_vehicles, SIZE);
+
+
+    cout<<"размер структуры Vehicle: "<<sizeof(Vehicle)<<endl;
+    cout<<"размер массива vehicles_rand[2000]"<<sizeof(vehicles_rand)<<endl;
+    cout<<"размер структуры Vehicle_without_nesting_structures: "<<sizeof(Vehicle_without_nesting_structures)<<endl;
+    cout<<"размер массива simple_vehicles[2000]"<<sizeof(simple_vehicles)<<endl;
+
+
+
     
     return 0;
 }
-
