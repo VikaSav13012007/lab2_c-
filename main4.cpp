@@ -15,6 +15,14 @@ struct Person {
     Address address;
 };
 
+struct Simple_Person{
+    string fio;
+    int age;
+    string street;
+    int house;
+    int flat;
+};
+
 int get_number() {
     int number;
     while (!(cin >> number)) {
@@ -73,31 +81,32 @@ void search_street(Person people[]) {
     }
 }
 
-void input_people_arrays(string fio[], int age[], string street[], int house[], int flat[]) {
+void input_simple_people(Simple_Person simple_people[]) {
     for (int i = 0; i < 3; i++) {
         cout << "введите данные для человека " << endl;
         cout << "ФИО: ";
-        getline(cin, fio[i]);
+        getline(cin, simple_people[i].fio);
         cout << "возраст: ";
-        age[i] = get_number();
+        simple_people[i].age = get_number();
         cout << "улица: ";
-        getline(cin, street[i]); 
+        getline(cin, simple_people[i].street); 
         cout << "дом: ";
-        house[i] = get_number();   
+        simple_people[i].house = get_number();   
         cout << "квартира: ";
-        flat[i] = get_number();  
+        simple_people[i].flat = get_number();  
     }
 }
 
-void print_people_arrays(string fio[], int age[], string street[], int house[], int flat[]) {
+void print_simple_people(Simple_Person simple_people[]) {
     cout << "список людей:" << endl;
     for (int i = 0; i < 3; i++) {
-        cout << i + 1 << ". " << fio[i] << ", " << age[i] 
-             << " лет   адрес: ул. " << street[i] << ", д. " << house[i] << ", кв. " << flat[i] << endl;
+        cout << i + 1 << ". " << simple_people[i].fio << ", " << simple_people[i].age 
+             << " лет   адрес: ул. " << simple_people[i].street << ", д. " 
+             << simple_people[i].house << ", кв. " << simple_people[i].flat << endl;
     }
 }
 
-void search_street_arrays(string fio[], int age[], string street[], int house[], int flat[]) {
+void search_street_simple_people(Simple_Person simple_people[]) {
     bool flag_found = false;
     string street_to_search = "";
     
@@ -105,9 +114,9 @@ void search_street_arrays(string fio[], int age[], string street[], int house[],
     cin >> street_to_search;
     
     for (int i = 0; i < 3; i++) {
-        if (street[i] == street_to_search) {
-            cout << fio[i] << ", " << age[i] << " лет, дом " 
-                 << house[i] << ", кв. " << flat[i] << endl;
+        if (simple_people[i].street == street_to_search) {
+            cout << simple_people[i].fio << ", " << simple_people[i].age << " лет, дом " 
+                 << simple_people[i].house << ", кв. " << simple_people[i].flat << endl;
             flag_found = true;
         }
     }
@@ -116,6 +125,8 @@ void search_street_arrays(string fio[], int age[], string street[], int house[],
         cout << "никто не найден на этой улице" << endl;
     }
 }
+
+
 
 int main() {
     Person people[3];
@@ -131,28 +142,29 @@ int main() {
     cout << "квартира: " << people[0].address.flat << endl; 
 
     
-    string fio[3];
-    int age[3];
-    string street[3];
-    int house[3];
-    int flat[3];
+    Simple_Person simple_people[3];
+    cout<<"введите данные для плоской структуры: "<<endl;
+
     
     cin.ignore(10000, '\n');
-    input_people_arrays(fio, age, street, house, flat);
-    print_people_arrays(fio, age, street, house, flat);
+    input_simple_people(simple_people);
+    print_simple_people(simple_people);
     
-    search_street_arrays(fio, age, street, house, flat);
+    search_street_simple_people(simple_people);
+    cout << "демонстрация использования плоской структуры:" << endl;
+    cout << "человек: " << simple_people[0].fio << endl;
+    cout << "улица: " <<simple_people[0].street << endl; 
+    cout << "дом: " << simple_people[0].house << endl;  
+    cout << "квартира: " << simple_people[0].flat << endl; 
 
     cout << "сравнение размера памяти:" << endl;
     cout << "размер структуры Person: " << sizeof(Person) << " байт" << endl;
     cout << "размер массива Person[3]: " << sizeof(people) << " байт" << endl;
 
-    cout << "размер массива строк fio[3]: " << sizeof(fio) << " байт" << endl;
-    cout << "размер массива int age[3]: " << sizeof(age) << " байт" << endl;
-    cout << "размер массива строк street[3]: " << sizeof(street) << " байт" << endl;
-    cout << "размер массива int house[3]: " << sizeof(house) << " байт" << endl;
-    cout << "размер массива int flat[3]: " << sizeof(flat) << " байт" << endl;
-    cout << "общий размер всех массивов: " << sizeof(fio) + sizeof(age) + sizeof(street) + sizeof(house) + sizeof(flat) << " байт" << endl;
-    
+    cout << "размер структуры Simple_Person: " << sizeof(Simple_Person) << " байт" << endl;
+    cout << "размер массива Simple_Person[3]: " << sizeof(simple_people) << " байт" << endl;
+
+
+   
     return 0;
 }
