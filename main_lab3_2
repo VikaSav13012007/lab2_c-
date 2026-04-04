@@ -1,0 +1,220 @@
+#include <array>
+#include <iostream>
+#include <vector>
+#include <list>
+#include <chrono>
+using namespace std;
+using namespace std::chrono;
+
+const int size_arr = 100;
+
+void input_vector_arr(vector<int>& vector_arr) {
+    for (int i = 0; i < size_arr; i++) {
+        vector_arr.push_back(rand() % 1000 + 1);
+    }
+   cout << "vector заполнен числами до " << size_arr << endl;
+}
+
+void print_vector_arr(vector<int>& vector_arr) {
+    cout << "элементы контейнера vector: ";
+    auto start = high_resolution_clock::now();
+    for (auto it = vector_arr.begin(); it != vector_arr.end(); ++it) {
+        cout << *it << " ";
+    }
+    cout << endl;
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "вывод элементов vector: " << duration << " наносекунд" << endl;
+}
+
+void insert_value_vector(vector<int>& vector_arr, int index_to_insert) {
+    auto start = high_resolution_clock::now();
+    auto it = vector_arr.begin();
+    advance(it, index_to_insert);
+    vector_arr.insert(it, 999);
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "вставка значения 999 по индексу "<<index_to_insert<<" vector: " << duration << " наносекунд" << endl;
+}
+
+void delete_value_vector_of_index(vector<int>& vector_arr,int index_to_delete) {
+    auto start = high_resolution_clock::now();
+    auto it = vector_arr.begin();
+    advance(it, index_to_delete);
+    vector_arr.erase(it);
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "удаление элемента по индексу "<< index_to_delete<<" vector: " << duration << " наносекунд" << endl;
+}
+
+void delete_value_vector_of_value(vector<int>& vector_arr, int max_value_to_delete) {
+    auto start = high_resolution_clock::now();
+    for (auto it = vector_arr.begin(); it != vector_arr.end(); ) {
+        if (*it > max_value_to_delete) {
+            it = vector_arr.erase(it);
+        } else {
+            ++it;
+        }
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "удаление элементов > 500: " << duration << " наносекунд" << endl;
+}
+
+void print_size_vector(const vector<int>& vector_arr) {
+    auto start = high_resolution_clock::now();
+    int count = 0;
+    for (auto it = vector_arr.begin(); it != vector_arr.end(); ++it) {
+        count++;
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "количество оставшихся элементов в vector: " << count << endl;
+    cout << "подсчет количества элементов vector занял: " << duration << " наносекунд" << endl;
+}
+
+void input_array_arr(array<int, size_arr>& array_arr) {
+    auto start = high_resolution_clock::now();
+    for (int i=0;i<array_arr.size();i++) {
+        array_arr[i] = rand() % 1000 + 1;
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "array заполнен числами до " << size_arr << " заняло: " << duration << " наносекунд" << endl;
+}
+
+void print_array_arr(const array<int, size_arr>& array_arr) {
+    cout << "элементы контейнера array: ";
+    auto start = high_resolution_clock::now();
+    for (auto it = array_arr.begin(); it != array_arr.end(); ++it) {
+        cout << *it << " ";
+    }
+    cout << endl;
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "вывод элементов array: " << duration << " наносекунд" << endl;
+}
+
+void print_size_array(const array<int, size_arr>& array_arr) {
+    auto start = high_resolution_clock::now();
+    int count = 0;
+    for (auto it = array_arr.begin(); it != array_arr.end(); ++it) {
+        if (*it != 0) {
+            count++;
+        }
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "количество элементов в array: " << count << endl;
+    cout << "подсчет количества элементов array занял: " << duration << " наносекунд" << endl;
+}
+
+void input_list_arr(list<int>& list_arr) {
+    auto start = high_resolution_clock::now();
+    for (int i = 0; i < size_arr; i++) {
+        list_arr.push_back(rand() % 1000 + 1);
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "list заполнен числами до " << size_arr << " заняло: " << duration << " наносекунд" << endl;
+}
+
+void print_list_arr(list<int>& list_arr) {
+    cout << "элементы контейнера list: ";
+    auto start = high_resolution_clock::now();
+    for (auto it = list_arr.begin(); it != list_arr.end(); ++it) {
+        cout << *it << " ";
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << endl;
+    cout << "вывод элементов list заняло: " << duration << " наносекунд" << endl;
+}
+
+void insert_value_list(list<int>& list_arr, int index_to_insert) {
+    auto start = high_resolution_clock::now();
+    auto it = list_arr.begin();
+    advance(it, index_to_insert);
+    list_arr.insert(it, 999);
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "вставка значения 999 в позицию " << index_to_insert << " list заняло: " << duration << " наносекунд" << endl;
+}
+
+void delete_value_list_of_index(list<int>& list_arr,int index_to_delete) {
+    auto start = high_resolution_clock::now();
+    auto it = list_arr.begin();
+    advance(it, index_to_delete);
+    list_arr.erase(it);
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "удаление элемента с индексом " << index_to_delete << " list заняло: " << duration << " наносекунд" << endl;
+}
+
+void delete_value_list_of_value(list<int>& list_arr,int max_value_to_delete) {
+    auto start = high_resolution_clock::now();
+    for (auto it = list_arr.begin(); it != list_arr.end(); ) {
+        if (*it > max_value_to_delete) {
+            it = list_arr.erase(it);
+        } else {
+            ++it;
+        }
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "удаление элементов > " << max_value_to_delete << " list заняло: " << duration << " наносекунд" << endl;
+}
+
+void print_size_list(const list<int>& list_arr) {
+    auto start = high_resolution_clock::now();
+    int count = 0;
+    for (auto it = list_arr.begin(); it != list_arr.end(); ++it) {
+        count++;
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "количество оставшихся элементов в list: " << count << endl;
+    cout << "вывод количества оставшихся элементов занял: " << duration << " наносекунд" << endl;
+}
+
+int main() {
+    int index_to_insert=50;
+    int index_to_delete=25;
+    int max_value_to_delete=500;
+    
+    cout << "vector" << endl;
+    vector<int> vector_arr;
+    input_vector_arr(vector_arr);
+    print_vector_arr(vector_arr);
+    insert_value_vector(vector_arr, index_to_insert);
+    cout << "размер контейнера vector до удаления элементов: " << vector_arr.size() << endl;
+    delete_value_vector_of_index(vector_arr,index_to_delete);
+    delete_value_vector_of_value(vector_arr,max_value_to_delete);
+    cout << "после удаления элементов по индексу и превышающих " << endl;
+    print_size_vector(vector_arr);
+    print_vector_arr(vector_arr);
+    cout << endl;
+    
+    cout << "array" << endl;
+    array<int, size_arr> array_arr;
+    input_array_arr(array_arr);
+    print_array_arr(array_arr);
+    cout << "вставка и удаление элементов контейнера array невозможна, так как статический" << endl;
+    print_size_array(array_arr);
+    cout << endl;
+    
+    cout << "list" << endl;
+    list<int> list_arr;
+    input_list_arr(list_arr);
+    print_list_arr(list_arr);
+    insert_value_list(list_arr,index_to_insert);
+    cout << "размер контейнера list до удаления элементов: " << list_arr.size() << endl;
+    delete_value_list_of_index(list_arr,index_to_delete);
+    delete_value_list_of_value(list_arr,max_value_to_delete);
+    cout << "после удаления элементов по индексу и превышающих " << endl;
+    print_size_list(list_arr);
+    print_list_arr(list_arr);
+    cout << endl;
+    
+    return 0;
+}
