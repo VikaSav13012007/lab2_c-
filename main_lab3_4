@@ -1,0 +1,265 @@
+#include <iostream>
+#include <array>
+#include <vector>
+#include <list>
+#include <string>
+#include <algorithm>
+#include <chrono>
+#include <ctime>
+
+using namespace std;
+using namespace std::chrono;
+
+const int SIZE = 50;
+
+string random_word() {
+    static const string charset = "abcdefghijklmnopqrstuvwxyz";
+    int length = (rand() % 10) + 3;
+    string result;
+    result.resize(length);
+    for (int i = 0; i < length; i++) {
+        result[i] = charset[rand() % charset.length()];
+    }
+    result[0] = toupper(result[0]);
+    return result;
+}
+
+void input_array(array<string, SIZE>& arr) {
+    for (int i = 0; i < SIZE; i++) {
+        arr[i] = random_word();
+    }
+}
+
+void input_vector(vector<string>& vec) {
+    for (int i = 0; i < SIZE; i++) {
+        vec.push_back(random_word());
+    }
+}
+
+void input_list(list<string>& lst) {
+    for (int i = 0; i < SIZE; i++) {
+        lst.push_back(random_word());
+    }
+}
+
+void find_a_words_array(array<string, SIZE>& arr) {
+    auto start = high_resolution_clock::now();
+    vector<string> words_with_start_a;
+    auto it = arr.begin();
+    while ((it = find_if(it, arr.end(), [](const string& s) { return s[0] == 'A'; })) != arr.end()) {
+        words_with_start_a.push_back(*it);
+        ++it;
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "поиск слов на 'A' в array: " << duration << " нс, найдено: " << words_with_start_a.size() << endl;
+}
+
+void find_a_words_vector(vector<string>& vec) {
+    auto start = high_resolution_clock::now();
+    vector<string> words_with_start_a;
+    auto it = vec.begin();
+    while ((it = find_if(it, vec.end(), [](string& word) { return word[0] == 'A'; })) != vec.end()) {
+        words_with_start_a.push_back(*it);
+        ++it;
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "поиск слов на 'A' в vector: " << duration << " нс, найдено: " << words_with_start_a.size() << endl;
+}
+
+void find_a_words_list(list<string>& list) {
+    auto start = high_resolution_clock::now();
+    vector<string> words_with_start_a;
+    auto it = list.begin();
+    while ((it = find_if(it, list.end(), [](const string& s) { return s[0] == 'A'; })) != list.end()) {
+        words_with_start_a.push_back(*it);
+        ++it;
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "поиск слов на 'A' в list: " << duration << " нс, найдено: " << words_with_start_a.size() << endl;
+}
+
+void replace_chars_array(array<string, SIZE>& arr) {
+    auto start = high_resolution_clock::now();
+    string chars = "AEIOUaeiouy";
+    for (int i = 0; i < SIZE; i++) {
+        transform(arr[i].begin(), arr[i].end(), arr[i].begin(), [chars](char c) {
+            for (char charr : chars) {
+        if (c == charr) return '*';
+    }
+    return c;
+    });
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "замена гласных в array: " << duration << " нс" << endl;
+}
+
+void replace_chars_vector(vector<string>& vec) {
+    auto start = high_resolution_clock::now();
+    string chars = "AEIOUaeiouy";
+    for (int i = 0; i < SIZE; i++) {
+        transform(vec[i].begin(), vec[i].end(), vec[i].begin(), [chars](char c) {
+            for (char charr : chars) {
+        if (c == charr) return '*';
+    }
+    return c;
+    });
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "Замена гласных в vector: " << duration << " нс" << endl;
+}
+
+void replace_chars_list(list<string>& lst) {
+    auto start = high_resolution_clock::now();
+    string chars = "AEIOUaeiouy";
+    for (auto i: lst) {
+        transform(i.begin(), i.end(), i.begin(), [chars](char c) {
+            for (char charr : chars) {
+        if (c == charr) return '*';
+    }
+    return c;
+    });
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "замена гласных в list: " << duration << " нс" << endl;
+}
+
+void longest_word_array(array<string, SIZE>& arr) {
+    auto start = high_resolution_clock::now();
+    auto it = max_element(arr.begin(), arr.end(), [](string& word1, string& word2) {
+        return word1.length() < word2.length();
+    });
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "самое длинное слово в array: " << *it << " длина " << (*it).length()<< ", время: " << duration << " нс" << endl;
+}
+
+void longest_word_vector(vector<string>& vec) {
+    auto start = high_resolution_clock::now();
+    auto it = max_element(vec.begin(), vec.end(), [](string& word1, string& word2) {
+        return word1.length() < word2.length();
+    });
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "самое длинное слово в vector: " << *it << " длина " << (*it).length() << ", время: " << duration << " нс" << endl;
+}
+
+void longest_word_list(list<string>& lst) {
+    auto start = high_resolution_clock::now();
+    auto it = max_element(lst.begin(), lst.end(), [](string& word1, string& word2) {
+        return word1.length() < word2.length();
+    });
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "самое длинное слово в list: " << *it << " длина " << (*it).length() << ", время: " << duration << " нс" << endl;
+}
+
+void filter_long_words_array(array<string, SIZE>& arr) {
+    auto start = high_resolution_clock::now();
+    vector<string> filter_arr;
+    copy_if(arr.begin(), arr.end(), back_inserter(filter_arr), [](const string& word) {
+        return word.length() > 7;
+    });
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "фильтрация слов длиннее 7 в array: " << duration << " нс, найдено: " << filter_arr.size() << endl;
+}
+
+void filter_long_words_vector(vector<string>& vec) {
+    auto start = high_resolution_clock::now();
+    vector<string> filter_arr;
+    copy_if(vec.begin(), vec.end(), back_inserter(filter_arr), [](string& word) {
+        return word.length() > 7;
+    });
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "фильтрация слов длиннее 7 в vector: " << duration << " нс, найдено: " << filter_arr.size() << endl;
+}
+
+void filter_long_words_list(list<string>& lst) {
+    auto start = high_resolution_clock::now();
+    vector<string> filter_arr;
+    copy_if(lst.begin(), lst.end(), back_inserter(filter_arr), [](string& word) {
+        return word.length() > 7;
+    });
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "фильтрация слов длиннее 7 в list: " << duration << " нс, найдено: " << filter_arr.size() << endl;
+}
+
+void print_first_words_array(array<string, SIZE>& arr, int count = 5) {
+    cout <<"первые " << count << " слов array: ";
+    for (int i = 0; i < count; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
+
+void print_first_words_vector(vector<string>& vec, int count = 5) {
+    cout <<"первые " << count << " слов vector: ";
+    for (int i = 0; i < count; i++) {
+        cout << vec[i] << " ";
+    }
+    cout << endl;
+}
+
+void print_first_words_list(list<string>& lst, int count = 5) {
+    cout <<"первые " << count << " слов vector: ";
+    int cnt_5=0;
+    for (auto it:lst) {
+        cout << it << " ";
+        cnt_5++;
+        if (cnt_5==5){break;}
+    }
+    cout << endl;
+}
+
+int main() {
+    srand(time(NULL));
+    
+    array<string, SIZE> words_array;
+    vector<string> words_vector;
+    list<string> words_list;
+    
+    input_array(words_array);
+    input_vector(words_vector);
+    input_list(words_list);
+    
+    cout << "начальные элеменеы vector" << endl;
+    print_first_words_vector(words_vector);
+    find_a_words_vector(words_vector);
+    replace_chars_vector(words_vector);
+    cout << "после замены гласных" << endl;
+    print_first_words_vector(words_vector);
+    longest_word_vector(words_vector);
+    filter_long_words_vector(words_vector);
+    print_first_words_vector(words_vector);
+
+    cout << "начальные элементы array" << endl;
+    print_first_words_array(words_array);
+    find_a_words_array(words_array);
+    replace_chars_array(words_array);
+    cout << "после замены гласных" << endl;
+    print_first_words_array(words_array);
+    longest_word_array(words_array);
+    filter_long_words_array(words_array);
+
+    cout << "начальные элементы list" << endl;
+    print_first_words_list(words_list);
+    find_a_words_list(words_list);
+    replace_chars_list(words_list);
+    cout << "после замены гласных" << endl;
+    print_first_words_list(words_list);
+    longest_word_list(words_list);
+    filter_long_words_list(words_list);
+  
+
+
+    
+    return 0;
+}
