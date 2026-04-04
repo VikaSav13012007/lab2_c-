@@ -1,0 +1,197 @@
+#include <array>
+#include <iostream>
+#include <vector>
+#include <list>
+#include <algorithm>
+
+using namespace std;
+
+const int SIZE=1000;
+
+struct Student{
+    string name;
+    int id;
+    double gpa;
+};
+string random_name() {
+    static string charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    string result;
+    int length = (rand() % 8) + 3;
+    result.resize(length);
+
+    for (int i = 0; i < length; i++)
+        result[i] = charset[rand() % charset.length()];
+
+    return result;
+}
+
+void rand_students(Student students[]){
+    for (int i=0;i<SIZE;i++){
+        students[i].name=random_name();
+        students[i].id=i+1;
+        students[i].gpa = (rand() % 401) / 100.0;
+
+    }
+
+}
+
+void input_array(array<Student, SIZE>& array, Student students[]) {
+    for (int i = 0; i < SIZE; i++) {
+        array[i].gpa = students[i].gpa;
+        array[i].id = students[i].id;
+        array[i].name = students[i].name;
+    }
+}
+
+void input_vector(vector<Student>& vector, Student students[]) {
+    for (int i = 0; i < SIZE; i++) {
+        vector.push_back(students[i]);
+    }
+}
+
+void input_list(list<Student>& list, Student students[]) {
+    for (int i = 0; i < SIZE; i++) {
+        list.push_back(students[i]);
+    }
+}
+
+void sort_array_gpa(array<Student, SIZE>& arr) {
+    sort(arr.begin(), arr.end(), []( Student& first, Student& second) {
+        return first.gpa > second.gpa;
+    });
+}
+
+void sort_vector_gpa(vector<Student>& vec) {
+    sort(vec.begin(), vec.end(), [](Student& first, Student& second) {
+        return first.gpa > second.gpa;
+    });
+}
+
+void sort_list_gpa(list<Student>& list) {
+    list.sort([](Student& first, Student& second) {
+        return first.gpa > second.gpa;
+    });
+}
+
+void sort_array_id(array<Student, SIZE>& arr) {
+    sort(arr.begin(), arr.end(), [](Student& first, Student& second) {
+        return first.id < second.id;
+    });
+}
+
+void sort_vector_id(vector<Student>& vec) {
+    sort(vec.begin(), vec.end(), [](Student& first, Student& second) {
+        return first.id < second.id;
+    });
+}
+
+void sort_list_id(list<Student>& list) {
+    list.sort([](Student& first, Student& second) {
+        return first.id < second.id;
+    });
+}
+
+void sort_array_name(array<Student, SIZE>& arr) {
+    sort(arr.begin(), arr.end(), [](Student& first, Student& second) {
+        return first.name < second.name;
+    });
+}
+
+void sort_vector_name(vector<Student>& vec) {
+    sort(vec.begin(), vec.end(), [](Student& first, Student& second) {
+        return first.name < second.name;
+    });
+}
+
+void sort_list_name(list<Student>& list) {
+    list.sort([](Student& first, Student& second) {
+        return first.name < second.name;
+    });
+}
+
+void print_vector_students(vector<Student>& vec){
+    sort_vector_gpa(vec);
+    cout<<"вывод первых 5 студентов после сортировки vector по gpa"<<endl;
+    for (int i=0;i<5;i++){
+        cout<<vec[i].id<<". "<<vec[i].name<<" "<<vec[i].gpa<<endl;
+    }
+    sort_vector_id(vec);
+    cout<<"вывод первых 5 студентов после сортировки vector по id"<<endl;
+    for (int i=0;i<5;i++){
+        cout<<vec[i].id<<". "<<vec[i].name<<" "<<vec[i].gpa<<endl;
+    }
+    sort_vector_name(vec);
+    cout<<"вывод первых 5 студентов после сортировки vector по name"<<endl;
+    for (int i=0;i<5;i++){
+        cout<<vec[i].id<<". "<<vec[i].name<<" "<<vec[i].gpa<<endl;
+    }
+
+}
+
+
+void print_array_students(array<Student,SIZE>& arr){
+    sort_array_gpa(arr);
+    cout<<"вывод первых 5 студентов после сортировки array по gpa"<<endl;
+    for (int i=0;i<5;i++){
+        cout<<arr[i].id<<". "<<arr[i].name<<" "<<arr[i].gpa<<endl;
+    }
+    sort_array_id(arr);
+    cout<<"вывод первых 5 студентов после сортировки array по id"<<endl;
+    for (int i=0;i<5;i++){
+        cout<<arr[i].id<<". "<<arr[i].name<<" "<<arr[i].gpa<<endl;
+    }
+    sort_array_name(arr);
+    cout<<"вывод первых 5 студентов после сортировки array по name"<<endl;
+    for (int i=0;i<5;i++){
+        cout<<arr[i].id<<". "<<arr[i].name<<" "<<arr[i].gpa<<endl;
+    }
+
+}
+
+void print_list_students(list<Student>& list){
+    sort_list_gpa(list);
+    cout<<"вывод первых 5 студентов после сортировки list по gpa"<<endl;
+    int cnt=0;
+    for (auto lst:list){
+        cout<<lst.id<<". "<<lst.name<<" "<<lst.gpa<<endl;
+        cnt++;
+        if (cnt==5){break;}
+    }
+    sort_list_id(list);
+    cout<<"вывод первых 5 студентов после сортировки list по id"<<endl;
+    cnt=0;
+    for (auto lst:list){
+        cout<<lst.id<<". "<<lst.name<<" "<<lst.gpa<<endl;
+        cnt++;
+        if (cnt==5){break;}
+    }
+    sort_list_name(list);
+    cout<<"вывод первых 5 студентов после сортировки list по name"<<endl;
+    cnt=0;
+    for (auto lst:list){
+        cout<<lst.id<<". "<<lst.name<<" "<<lst.gpa<<endl;
+        cnt++;
+        if (cnt==5){break;}
+    }
+
+}
+
+int main(){
+    srand(time(NULL));
+    Student students[SIZE];
+    rand_students(students); 
+    array<Student, SIZE> students_array;
+    vector<Student> students_vector;
+    list<Student> students_list;
+    input_array(students_array,students);
+    input_vector(students_vector,students);
+    input_list(students_list,students);
+
+    print_vector_students(students_vector);
+    print_array_students(students_array);
+    print_list_students(students_list);
+
+
+
+    return 0;
+}
