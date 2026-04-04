@@ -1,0 +1,139 @@
+#include <array>
+#include <iostream>
+#include <vector>
+#include <list>
+#include <algorithm>
+using namespace std;
+
+const int size_arr=10;
+
+void process_vector() {
+    cout << "контейнер vector: " << endl;
+    
+    //заполнение vector
+    vector<int> vector_arr;
+    for (int i = 1; i <= size_arr; i++) {
+        vector_arr.push_back(i);
+    }
+    cout << "vector заполнен числами от 1 до " <<size_arr<< endl;
+    
+    //вывод всех элементов
+    cout << "элементы контейнера vector: ";
+    for (int i = 0; i < size_arr; i++) {
+        cout << vector_arr[i] << " ";
+    }
+    cout << endl;
+    
+    //иззменение элемента с индексом 5 на 100
+    vector_arr[5] = 100;
+    cout << "после изменения 5-го элемента на 100: ";
+    for (int i = 0; i < size_arr; i++) {
+        cout << vector_arr[i] << " ";
+    }
+    cout << endl;
+    
+    //добавление элемента в конец
+    vector_arr.push_back(200);
+    cout << "после добавления элемента 200 в конец: ";
+    for (int i = 0; i < vector_arr.size(); i++) {
+        cout << vector_arr[i] << " ";
+    }
+    cout << endl;
+    
+    //вывод размера
+    cout << "размер контейнера vector: " << vector_arr.size() << endl;
+    
+    //вывод элемента с ингдексом 0 и последнего
+    cout << "элемент с индексом 0: " << vector_arr[0]<< ", последний элемент: " << vector_arr.back() << endl;
+    cout << endl;
+}
+
+void process_array() {
+    cout << "контейнер array: " << endl;
+    
+    //заполнение array
+    array<int, size_arr> array_arr;
+    for (int i = 0; i < size_arr; i++) {
+        array_arr[i] = i + 1;
+    }
+    cout << "array заполнен числами от 1 до " <<size_arr<< endl;
+    
+    //вывод всех элементов
+    cout << "элементы контейнера array: ";
+    for (int i = 0; i < size_arr; i++) {
+        cout << array_arr[i] << " ";
+    }
+    cout << endl;
+    
+    //изменение элемента с индексом 5 на 100
+    array_arr[5] = 100;
+    cout << "после изменения 5-го элемента на 100: ";
+    for (int i = 0; i < size_arr; i++) {
+        cout << array_arr[i] << " ";
+    }
+    cout << endl;
+    
+    //добавление элемента в конец
+    cout << "array - статический контейнер, добавить элемент нельзя" << endl;
+    
+    //вывод размера
+    cout << "размер контейнера array: " << array_arr.size() << endl;
+    
+    //вывод элемента с ингдексом 0 и последнего
+    cout << "элемент с индексом 0: " << array_arr[0]<< ", последний элемент: " << array_arr.back() << endl;
+    cout << endl;
+}
+
+void process_list() {
+    cout << "контейнер list: " << endl;
+    
+    //заполнение list
+    list<int> list_arr;
+    for (int i = 1; i <= size_arr; i++) {
+        list_arr.push_back(i);
+    }
+    cout << "list заполнен числами от 1 до " << size_arr<<endl;
+    
+    int Old_elem = 5;
+    int New_elem = 100;
+    
+    //вывод всех элементов
+    cout << "элементы контейнера list: ";
+    for (int i : list_arr) {
+        cout << i << " ";
+    }
+    cout << endl;
+    
+    //изменение элемента со значением 5 на 100
+    replace(list_arr.begin(), list_arr.end(), Old_elem, New_elem);
+    cout << "после изменения элемента со значением 5 на 100: ";
+    for (int i : list_arr) {
+        cout << i << " ";
+    }
+    cout << endl;
+    
+    //добавление элемента в конец
+    list_arr.push_back(200);
+    cout << "после добавления элемента 200 в конец: ";
+    for (int i : list_arr) {
+        cout << i << " ";
+    }
+    cout << endl;
+    
+    //вывод размера
+    cout << "размер контейнера list: " << list_arr.size() << endl;
+    
+    //вывод элемента с ингдексом 0 и последнего
+    cout << "элемент с индексом 0: " << list_arr.front()<< ", последний элемент: " << list_arr.back() << endl;
+    cout << endl;
+}
+
+int main() {
+
+    process_array();
+    process_vector();
+    process_list();
+    
+    return 0;
+}
+
