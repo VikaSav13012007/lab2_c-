@@ -1,0 +1,209 @@
+#include <iostream>
+#include <array>
+#include <vector>
+#include <list>
+#include <chrono>
+#include <ctime>
+
+using namespace std;
+using namespace std::chrono;
+
+const int SIZE = 100000;
+const int INSERT_COUNT = 1000;
+const int INSERT_MID_COUNT = 100;
+const int INSERT_POS = 50000;
+
+void rand_input_array(array<int, SIZE>& arr) {
+    for (int i = 0; i < SIZE; i++) {
+        arr[i] = rand() % 1000;
+    }
+}
+
+void rand_input_vector(vector<int>& vec) {
+    for (int i = 0; i < SIZE; i++) {
+        vec.push_back(rand() % 1000);
+    }
+}
+
+void rand_input_list(list<int>& lst) {
+    for (int i = 0; i < SIZE; i++) {
+        lst.push_back(rand() % 1000);
+    }
+}
+
+void sum_array(array<int, SIZE>& arr) {
+    auto start = high_resolution_clock::now();
+    int sum = 0;
+    for (int i = 0; i < SIZE; i++) {
+        sum += arr[i];
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "последовательный доступ array сумма: " << sum<<" "<< duration << " нс" << endl;
+}
+
+void sum_vector(vector<int>& vec) {
+    auto start = high_resolution_clock::now();
+    int sum = 0;
+    for (int i = 0; i < SIZE; i++) {
+        sum += vec[i];
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "последовательный доступ vector сумма: " << sum << " " << duration << " нс" << endl;
+}
+
+void sum_list(list<int>& lst) {
+    auto start = high_resolution_clock::now();
+    int sum = 0;
+    for (auto it = lst.begin(); it != lst.end(); ++it) {
+        sum += *it;
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "последовательный доступ list сумма: " << sum << " " << duration << " нс" << endl;
+}
+
+void elem_of_index_array(array<int, SIZE>& arr) {
+    auto start = high_resolution_clock::now();
+    int indices[] = {0, 25000, 50000, 75000, 99999};
+    for (int i = 0; i < 5; i++) {
+        int val = arr[indices[i]];
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "произвольный доступ array: " << duration << " нс" << endl;
+}
+
+void elem_of_index_vector(vector<int>& vec) {
+    auto start = high_resolution_clock::now();
+    int indices[] = {0, 25000, 50000, 75000, 99999};
+    for (int i = 0; i < 5; i++) {
+        int val = vec[indices[i]];
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "произвольный доступ vector: " << duration << " нс" << endl;
+}
+
+void elem_of_index_list(list<int>& lst) {
+    auto start = high_resolution_clock::now();
+    int indices[] = {0, 25000, 50000, 75000, 99999};
+    for (int i = 0; i < 5; i++) {
+        auto it = lst.begin();
+        advance(it, indices[i]);
+        int val = *it;
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "произвольный доступ list : " << duration << " нс" << endl;
+}
+
+
+void push_back_vector(vector<int>& vec) {
+    auto start = high_resolution_clock::now();
+    for (int i = 0; i < INSERT_COUNT; i++) {
+        vec.push_back(rand() % 1000);
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "вставка в конец vector " << INSERT_COUNT << " элементов: " << duration << " нс" << endl;
+}
+
+void push_back_list(list<int>& lst) {
+    auto start = high_resolution_clock::now();
+    for (int i = 0; i < INSERT_COUNT; i++) {
+        lst.push_back(rand() % 1000);
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "вставка в конец list " << INSERT_COUNT << " элементов: " << duration << " нс" << endl;
+}
+
+void insert_middle_vector(vector<int>& vec) {
+    auto start = high_resolution_clock::now();
+    auto it = vec.begin();
+    advance(it, INSERT_POS);
+    for (int i = 0; i < INSERT_MID_COUNT; i++) {
+        it = vec.insert(it, rand() % 1000);
+        ++it;
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "вставка в середину vector " << INSERT_MID_COUNT << " элементов: " << duration << " нс" << endl;
+}
+
+void insert_middle_list(list<int>& lst) {
+    auto start = high_resolution_clock::now();
+    auto it = lst.begin();
+    advance(it, INSERT_POS);
+    for (int i = 0; i < INSERT_MID_COUNT; i++) {
+        it = lst.insert(it, rand() % 1000);
+        ++it;
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "вставка в середину list " << INSERT_MID_COUNT << " элементов: " << duration << " нс" << endl;
+}
+
+void erase_middle_vector(vector<int>& vec) {
+    auto start = high_resolution_clock::now();
+    auto it = vec.begin();
+    advance(it, INSERT_POS);
+    for (int i = 0; i < INSERT_MID_COUNT; i++) {
+        it = vec.erase(it);
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "удаление из середины vector " << INSERT_MID_COUNT << " элементов: " << duration << " нс" << endl;
+}
+
+void erase_middle_list(list<int>& lst) {
+    auto start = high_resolution_clock::now();
+    auto it = lst.begin();
+    advance(it, INSERT_POS);
+    for (int i = 0; i < INSERT_MID_COUNT; i++) {
+        it = lst.erase(it);
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start).count();
+    cout << "удаление из середины list " << INSERT_MID_COUNT << " элементов: " << duration << " нс" << endl;
+}
+
+int main() {
+    srand(time(NULL));
+    
+    array<int, SIZE> arr;
+    vector<int> vec;
+    list<int> lst;
+    
+    rand_input_array(arr);
+    rand_input_vector(vec);
+    rand_input_list(lst);
+    
+    cout << "vector" << endl;
+    sum_vector(vec);
+    elem_of_index_vector(vec);
+    push_back_vector(vec);
+    insert_middle_vector(vec);
+    erase_middle_vector(vec);
+    cout << endl;
+    
+    cout << "list" << endl;
+    sum_list(lst);
+    elem_of_index_list(lst);
+    push_back_list(lst);
+    insert_middle_list(lst);
+    erase_middle_list(lst);
+    cout << endl;
+    
+    cout << "array" << endl;
+    sum_array(arr);
+    elem_of_index_array(arr);
+    cout << "array: вставка в конец невозможна" << endl;
+    cout << "array: вставка в середину невозможна" << endl;
+    cout << "array: удаление из середины невозможно" << endl;
+    
+    return 0;
+}
+
