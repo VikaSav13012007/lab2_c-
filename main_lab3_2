@@ -8,9 +8,15 @@ using namespace std::chrono;
 
 const int size_arr = 100;
 
-void input_vector_arr(vector<int>& vector_arr) {
+void random_elem_for_all_arrs(int random_100_number[]){
     for (int i = 0; i < size_arr; i++) {
-        vector_arr.push_back(rand() % 1000 + 1);
+        random_100_number[i]=rand() % 1000 + 1;
+    }
+}
+
+void input_vector_arr(vector<int>& vector_arr, int random_100_number[]) {
+    for (int i = 0; i < size_arr; i++) {
+        vector_arr.push_back(random_100_number[i]);
     }
    cout << "vector заполнен числами до " << size_arr << endl;
 }
@@ -73,10 +79,10 @@ void print_size_vector(const vector<int>& vector_arr) {
     cout << "подсчет количества элементов vector занял: " << duration << " наносекунд" << endl;
 }
 
-void input_array_arr(array<int, size_arr>& array_arr) {
+void input_array_arr(array<int, size_arr>& array_arr, int random_100_number[]) {
     auto start = high_resolution_clock::now();
-    for (int i=0;i<array_arr.size();i++) {
-        array_arr[i] = rand() % 1000 + 1;
+    for (int i=0;i<size_arr;i++) {
+        array_arr[i] = random_100_number[i];
     }
     auto end = high_resolution_clock::now();
     auto duration = duration_cast<nanoseconds>(end - start).count();
@@ -109,10 +115,10 @@ void print_size_array(const array<int, size_arr>& array_arr) {
     cout << "подсчет количества элементов array занял: " << duration << " наносекунд" << endl;
 }
 
-void input_list_arr(list<int>& list_arr) {
+void input_list_arr(list<int>& list_arr,int random_100_number[]) {
     auto start = high_resolution_clock::now();
     for (int i = 0; i < size_arr; i++) {
-        list_arr.push_back(rand() % 1000 + 1);
+        list_arr.push_back(random_100_number[i]);
     }
     auto end = high_resolution_clock::now();
     auto duration = duration_cast<nanoseconds>(end - start).count();
@@ -181,10 +187,12 @@ int main() {
     int index_to_insert=50;
     int index_to_delete=25;
     int max_value_to_delete=500;
+    int random_100_number[size_arr];
+    random_elem_for_all_arrs(random_100_number);
     
     cout << "vector" << endl;
     vector<int> vector_arr;
-    input_vector_arr(vector_arr);
+    input_vector_arr(vector_arr,random_100_number);
     print_vector_arr(vector_arr);
     insert_value_vector(vector_arr, index_to_insert);
     cout << "размер контейнера vector до удаления элементов: " << vector_arr.size() << endl;
@@ -197,7 +205,7 @@ int main() {
     
     cout << "array" << endl;
     array<int, size_arr> array_arr;
-    input_array_arr(array_arr);
+    input_array_arr(array_arr,random_100_number);
     print_array_arr(array_arr);
     cout << "вставка и удаление элементов контейнера array невозможна, так как статический" << endl;
     print_size_array(array_arr);
@@ -205,7 +213,7 @@ int main() {
     
     cout << "list" << endl;
     list<int> list_arr;
-    input_list_arr(list_arr);
+    input_list_arr(list_arr,random_100_number);
     print_list_arr(list_arr);
     insert_value_list(list_arr,index_to_insert);
     cout << "размер контейнера list до удаления элементов: " << list_arr.size() << endl;
