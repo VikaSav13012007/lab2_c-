@@ -14,12 +14,13 @@ struct Student{
     double gpa;
 };
 string random_name() {
-    static string charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    string charset = "abcdefghijklmnopqrstuvwxyz";
+    string big_char="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     string result;
     int length = (rand() % 8) + 3;
     result.resize(length);
-
-    for (int i = 0; i < length; i++)
+    result[0]=big_char[rand() % big_char.length()];
+    for (int i = 1; i < length; i++)
         result[i] = charset[rand() % charset.length()];
 
     return result;
