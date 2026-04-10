@@ -93,8 +93,9 @@ void process_list() {
         list_arr.push_back(i);
     }
     cout << "list заполнен числами от 1 до " << size_arr<<endl;
-    
-    int Old_elem = 5;
+    auto it = list_arr.begin();
+    advance(it,5);
+    int Old_elem = *it;
     int New_elem = 100;
     
     //вывод всех элементов
@@ -136,4 +137,3 @@ int main() {
     
     return 0;
 }
-
